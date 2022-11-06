@@ -32,7 +32,7 @@ class PostViewTests(TestCase):
             name='small.gif',
             content=small_gif,
             content_type='image/gif'
-        )       
+        )
         cls.user = User.objects.create_user(username='leo')
         cls.group = Group.objects.create(
             title='Тестовый заголовок',
@@ -87,7 +87,7 @@ class PostViewTests(TestCase):
             self.assertEqual(
                 task_image,
                 'posts/small.gif'
-            )        
+            )
 
     def test_paginator_correct_context(self):
         """Шаблон index, group_list и profile

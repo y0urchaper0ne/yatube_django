@@ -4,7 +4,7 @@ from .forms import PostForm, CommentForm
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_page
+# from django.views.decorators.cache import cache_page
 from django.http import HttpResponseForbidden
 
 
@@ -48,7 +48,9 @@ def profile(request, username):
     following = False
     if request.user.is_authenticated:
         if request.user != author.username:
-            following = Follow.objects.filter(user=request.user, author=author).exists()
+            following = Follow.objects.filter(
+                user=request.user, author=author
+            ).exists()
     context = {
         'post_count': post_count,
         'page_obj': page_obj,
