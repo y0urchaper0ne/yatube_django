@@ -10,7 +10,6 @@
             <li class="list-group-item">
               Дата публикации: {{ post_info.pub_date|date:"d E Y" }}
             </li>
-            <!-- если у поста есть группа --> 
             {% if post.group %}  
             <li class="list-group-item">
               Группа: {{post.group.title}}

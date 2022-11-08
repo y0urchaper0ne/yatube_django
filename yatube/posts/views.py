@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Group, Follow
-from .forms import PostForm, CommentForm
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-# from django.views.decorators.cache import cache_page
-from django.http import HttpResponseForbidden
+from django.views.decorators.cache import cache_page
+from .models import Post, Group, Follow
+from .forms import PostForm, CommentForm
 
 
 User = get_user_model()
@@ -15,7 +14,7 @@ ITEMS_PER_PAGE = 10
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    post_list = Post.objects.all().filter(group=group)
+    post_list = group.posts.filter(group=group)
     paginator = Paginator(post_list, ITEMS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -26,7 +25,7 @@ def group_posts(request, slug):
     return render(request, 'posts/group_list.html', context)
 
 
-# @cache_page(20, key_prefix='index_page')
+@cache_page(20, key_prefix='index_page')
 def index(request):
     post_list = Post.objects.all()
     paginator = Paginator(post_list, ITEMS_PER_PAGE)
@@ -39,9 +38,9 @@ def index(request):
 
 
 def profile(request, username):
-    author = User.objects.get(username=username)
-    user_posts = Post.objects.all().filter(author=author)
-    post_count = Post.objects.all().filter(author=author).count()
+    author = get_object_or_404(User, username=username)
+    user_posts = author.posts.filter(author=author)
+    post_count = user_posts.count()
     paginator = Paginator(user_posts, ITEMS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -99,7 +98,9 @@ def post_edit(request, post_id):
     )
 
     if post.author != request.user:
-        return HttpResponseForbidden()
+        return redirect(
+            'posts:post_detail', post_id
+        )
 
     if form.is_valid():
         form.save()

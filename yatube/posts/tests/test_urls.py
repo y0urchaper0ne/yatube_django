@@ -1,9 +1,9 @@
+from http import HTTPStatus
 from django.test import TestCase, Client
-from ..models import Post, Group
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from http import HTTPStatus
 from django.core.cache import cache
+from ..models import Post, Group
 
 User = get_user_model()
 
@@ -32,39 +32,19 @@ class PostURLTests(TestCase):
 
     def test_urls_response_guest(self):
         """Проверяем статус страниц для гостя."""
+        post_id = PostURLTests.post.id
         url_status = {
-            reverse('posts:index'): HTTPStatus.OK,
-            reverse(
-                'posts:group_list',
-                kwargs={'slug': PostURLTests.group.slug}
-            ): HTTPStatus.OK,
-            reverse(
-                'posts:profile',
-                kwargs={'username': PostURLTests.user.username}
-            ): HTTPStatus.OK,
-            reverse(
-                'posts:post_detail',
-                kwargs={'post_id': PostURLTests.post.pk}
-            ): HTTPStatus.OK,
-            reverse(
-                'posts:add_comment',
-                kwargs={'post_id': PostURLTests.post.pk}
-            ): HTTPStatus.FOUND,
-            reverse(
-                'posts:post_edit',
-                kwargs={'post_id': PostURLTests.post.pk}
-            ): HTTPStatus.FOUND,
-            reverse('posts:post_create'): HTTPStatus.FOUND,
+            '/': HTTPStatus.OK,
+            f'/group/{self.group.slug}/': HTTPStatus.OK,
+            f'/profile/{self.user.username}/': HTTPStatus.OK,
+            f'/posts/{post_id}/': HTTPStatus.OK,
+            f'posts/{post_id}/comment/': HTTPStatus.NOT_FOUND,
+            f'/posts/{post_id}/edit/': HTTPStatus.FOUND,
+            '/create/': HTTPStatus.FOUND,
             '/unexpecting_page/': HTTPStatus.NOT_FOUND,
-            reverse(
-                'posts:profile_follow',
-                kwargs={'username': PostURLTests.user.username}
-            ): HTTPStatus.FOUND,
-            reverse(
-                'posts:profile_unfollow',
-                kwargs={'username': PostURLTests.user.username}
-            ): HTTPStatus.FOUND,
-            reverse('posts:follow_index'): HTTPStatus.FOUND
+            f'profile/{self.user.username}/follow/': HTTPStatus.NOT_FOUND,
+            f'profile/{self.user.username}/unfollow/': HTTPStatus.NOT_FOUND,
+            '/follow/': HTTPStatus.FOUND
         }
         for url, status_code in url_status.items():
             with self.subTest(url=url):

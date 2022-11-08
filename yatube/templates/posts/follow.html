@@ -7,7 +7,9 @@
   {% endblock %}
     <article>
       {% include 'posts/includes/switcher.html' %}
-      {% comment %} <h3>Вы ни на кого не подписаны</h3> {% endcomment %}
+      {% if not page_obj %} 
+      <h3>Вы ни на кого не подписаны</h3>
+      {% endif %} 
       {% for post in page_obj %}
       <ul>
         <li>

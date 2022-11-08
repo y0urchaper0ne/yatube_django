@@ -11,7 +11,7 @@ class Group(models.Model):
     description = models.TextField()
 
     def __str__(self) -> str:
-        return f'{self.title}'
+        return self.title
 
 
 class Post(CreatedModel):
@@ -36,7 +36,8 @@ class Post(CreatedModel):
     image = models.ImageField(
         'Картинка',
         upload_to='posts/',
-        blank=True
+        blank=True,
+        null=True,
     )
 
     class Meta:
