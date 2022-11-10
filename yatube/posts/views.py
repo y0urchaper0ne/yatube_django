@@ -14,7 +14,7 @@ ITEMS_PER_PAGE = 10
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    post_list = group.posts.filter(group=group)
+    post_list = group.posts.all()
     paginator = Paginator(post_list, ITEMS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -39,7 +39,7 @@ def index(request):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    user_posts = author.posts.filter(author=author)
+    user_posts = author.posts.all()
     post_count = user_posts.count()
     paginator = Paginator(user_posts, ITEMS_PER_PAGE)
     page_number = request.GET.get('page')
