@@ -26,6 +26,7 @@ SECRET_KEY = 'a=1a&cnq@(9a^xsgmgvs$(!hz20ze&$c4*v*r08so0wb1d^pi0'
 DEBUG = False
 
 ALLOWED_HOSTS = [
+    '51.250.92.190'
     'localhost',
     '127.0.0.1',
     '[::1]',
@@ -144,14 +145,14 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#     }
+# }
 
-TEST_CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-    }
-}
+# TEST_CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+#     }
+# }

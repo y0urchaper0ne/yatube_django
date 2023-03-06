@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_page
+# from django.views.decorators.cache import cache_page
 from .models import Post, Group, Follow
 from .forms import PostForm, CommentForm
 
@@ -25,7 +25,7 @@ def group_posts(request, slug):
     return render(request, 'posts/group_list.html', context)
 
 
-@cache_page(20, key_prefix='index_page')
+# @cache_page(20, key_prefix='index_page')
 def index(request):
     post_list = Post.objects.all()
     paginator = Paginator(post_list, ITEMS_PER_PAGE)
