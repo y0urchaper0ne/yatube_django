@@ -3,7 +3,6 @@
 {% block content %}
 {% load thumbnail %}
 {% load user_filters %}
-
       <div class="row">
         <aside class="col-12 col-md-3">
           <ul class="list-group list-group-flush">
@@ -41,6 +40,9 @@
           {% if request.user.id == post_info.author.id %}
           <a class="btn btn-primary" href={% url 'posts:post_edit' post_info.pk %}>
             редактировать запись
+          </a>
+          <a class="btn btn-danger" href={% url 'posts:post_delete' post_info.pk %}>
+            удалить запись
           </a>
           {% endif %}
           {% if user.is_authenticated %}

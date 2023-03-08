@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 # from django.views.decorators.cache import cache_page
@@ -113,6 +114,14 @@ def post_edit(request, post_id):
         'post': post,
     }
     return render(request, template, context)
+
+
+@login_required
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if post.author == request.user:
+        post.delete()
+    return redirect('posts:profile', post.author.username)
 
 
 @login_required
